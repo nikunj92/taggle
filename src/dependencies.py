@@ -5,16 +5,14 @@ from src.services.submission_service import SubmissionService
 from src.storage.in_memory_db import InMemoryDB
 
 
-def get_submission_service(state: State) -> SubmissionService:
-    db: InMemoryDB = state.db
-    return SubmissionService(db)
+async def get_submission_service(state: State) -> SubmissionService:
+    return SubmissionService(await get_db(state))
 
 
-def get_search_service(state: State) -> SearchService:
-    db: InMemoryDB = state.db
-    return SearchService(db)
+async def get_search_service(state: State) -> SearchService:
+    return SearchService(await get_db(state))
 
-def get_db(state: State) -> InMemoryDB:
+async def get_db(state: State) -> InMemoryDB:
     if not hasattr(state, "db"):
-        state.db = InMemoryDB()
+        raise Exception("Database not initialized in state. Ensure to set it before accessing. - name this exception something more descriptive")
     return state.db
