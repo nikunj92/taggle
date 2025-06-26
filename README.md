@@ -62,22 +62,11 @@ As provided in the requirements, we will implement two endpoints:
   - `value`: The submitted value (IP or hash).
   - `tags`: A list of tags associated with the value.
   - `type`: The type of the value (e.g., "ip", "hash", "domain").
-- The in-memory store will be a dictionary where the key is the `value` in our DTO. 
-  - I could combine it with `id` if I wanted to allow multiple entries with the same value but different tags.
-  - However, I clarify in my assumptions why I think this is not necessary.
+- We will use a dictionary to map the `id` to the data structure for quick access.
+- We will also maintain a reverse mapping from `value` to `id` to facilitate quick lookups and deduplication.
 
 ### Assumptions
 - We can lower case tags and values - the input case is not significant.
-- Deduplication
-  - If the value exists with the same tags, we shall return the existing ID.
-  - Throw an error if the value already exists with different tags
-    - Starting with a simple check for the value in the in-memory store to avoid duplicates.
-    - Assuming that we would extend with a `PUT` and `DELETE` endpoint later so a simple check for the value is sufficient for now.
-  - Other options
-    - We could do a composite key of `value` and `tags`.
-      - This would allow us to have multiple entries with the same value but different tags.
-    - We could change the tags on resubmission
-      - This is a `PUT` so I would push back if someone wanted to do this.
 
 - [TODO] this uncovered a misunderstanding of the requirements
   - We need to allow multiple entries with the same value but different tags.

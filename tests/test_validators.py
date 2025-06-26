@@ -1,4 +1,4 @@
-from src import ValueType
+from src.domain import ValueType
 from src.utils.helpers import detect_value_type
 
 def test_valid_ip():

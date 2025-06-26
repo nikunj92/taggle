@@ -1,8 +1,8 @@
 import re
 from ipaddress import ip_address
 
-from src.errors.base import ValueTypeError
-from src.domain.types import ValueType
+from src.domain import ValueType
+from src.errors.base import ModelTypeError
 
 # TODO test regexes are too strict or too loose or if libraries can be used
 
@@ -23,4 +23,4 @@ def detect_value_type(value: str) -> ValueType:
         ip_address(value)
         return ValueType.IP
     except ValueError:
-        raise ValueTypeError(f"Unsupported value: {value}! Did not match Domain, IP or Hash type")
+        raise ModelTypeError(f"Unsupported value: {value}! Did not match Domain, IP or Hash type")

@@ -1,25 +1,12 @@
 from typing import Dict, List, Optional
-from uuid import uuid4
 
-from src.domain.types import ValueType
+from litestar import Litestar
+
+from src.domain.item import StoredItem
 from src.errors.base import NoItemsMatchedError
 
-
-class StoredItem:
-    def __init__(self, value: str, tags: List[str], value_type: ValueType):
-        self.id = str(uuid4())
-        self.value = value.lower()
-        self.tags = [tag.lower() for tag in tags]
-        self.type = value_type
-
-    def to_dict(self) -> dict:
-        return {
-            "id": self.id,
-            "value": self.value,
-            "tags": self.tags,
-            "type": self.type.value,
-        }
-
+def init_state(app: Litestar) -> None:
+    app.state.db = InMemoryDB()
 
 class InMemoryDB:
     def __init__(self):
