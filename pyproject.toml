@@ -5,7 +5,7 @@ description = "Minimal REST API with tagging and search built using Litestar"
 authors = ["nikunj-satyanet <nikunj_sura@hotmail.com>"]
 license = "Apache License"
 readme = "README.md"
-packages = [{ include = "app" }]
+packages = [{ include = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.13"
@@ -18,10 +18,7 @@ pytest = "^8.4.1"
 litestar = "^2.16.0"
 
 [tool.poetry.scripts]
-start = "src.app:run"
-
-
-
+start = "src.app:main"
 
 [build-system]
 requires = ["poetry-core"]

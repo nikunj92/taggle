@@ -8,7 +8,9 @@ app = Litestar(
     on_startup=[init_state]
 )
 
-if __name__ == "__main__":
+def main():
     import uvicorn
+    uvicorn.run("src.app:app", host="127.0.0.1", port=8000, reload=True)
 
-    uvicorn.run("app.src.main:app", host="127.0.0.1", port=8000, reload=True)
+if __name__ == "__main__":
+    main()
