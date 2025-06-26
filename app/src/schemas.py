@@ -1,12 +1,7 @@
-from enum import Enum
 from typing import List, Optional
 from pydantic import BaseModel
 
-
-class ValueType(str, Enum):
-    HASH = "hash"
-    DOMAIN = "domain"
-    IP = "ip"
+from app.src.types import ValueType
 
 class SubmitRequest(BaseModel):
     value: str

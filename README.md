@@ -55,4 +55,4 @@ TODO consider a better structure for requirements
 
 ### Story so far
 Simple litestar template with endpoints routes and schemas defined.
-
+added basic tests for the endpoints.

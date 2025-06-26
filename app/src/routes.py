@@ -4,7 +4,8 @@ from litestar import get, post
 from litestar.datastructures import State
 from litestar.response import Response
 
-from app.src.schemas import SubmitRequest, ItemResponse, ValueType
+from app.src.schemas import SubmitRequest, ItemResponse
+from app.src.types import ValueType
 
 
 @post("/submit")

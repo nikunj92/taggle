@@ -1,5 +1,5 @@
 import re
-from app.src.schemas import ValueType
+from app.src.types import ValueType
 from ipaddress import ip_address
 
 # TODO test regexes are too strict or too loose or if libraries can be used
