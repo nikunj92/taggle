@@ -9,6 +9,7 @@ from src.dependencies import (
     get_search_service,
     get_db,
 )
+from src.storage.in_memory_db import InMemoryDB
 
 
 def create_app(
@@ -24,6 +25,7 @@ def create_app(
             "submission_service": Provide(submission_service_provider or get_submission_service),
             "search_service": Provide(search_service_provider or get_search_service),
         },
+        on_startup=[lambda state: state.update({"db": db_provider()})] if db_provider else {"db": InMemoryDB()},
     )
 
 app = create_app()
