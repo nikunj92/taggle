@@ -1,18 +1,32 @@
+# src/app.py
+
 from litestar import Litestar
 from litestar.di import Provide
-
-from src.dependencies import get_submission_service, get_search_service
 from src.routes import submit_item, query_items
-from src.storage import init_state
 
-app = Litestar(
-    route_handlers=[submit_item, query_items],
-    on_startup=[init_state],
-    dependencies={
-        "submission_service": Provide(get_submission_service),
-        "search_service": Provide(get_search_service),
-    }
+from src.dependencies import (
+    get_submission_service,
+    get_search_service,
+    get_db,
 )
+
+
+def create_app(
+    *,
+    db_provider=None,
+    submission_service_provider=None,
+    search_service_provider=None,
+) -> Litestar:
+    return Litestar(
+        route_handlers=[submit_item, query_items],
+        dependencies={
+            "db": Provide(db_provider or get_db),
+            "submission_service": Provide(submission_service_provider or get_submission_service),
+            "search_service": Provide(search_service_provider or get_search_service),
+        },
+    )
+
+app = create_app()
 
 
 def main():

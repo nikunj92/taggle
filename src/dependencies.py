@@ -13,3 +13,8 @@ def get_submission_service(state: State) -> SubmissionService:
 def get_search_service(state: State) -> SearchService:
     db: InMemoryDB = state.db
     return SearchService(db)
+
+def get_db(state: State) -> InMemoryDB:
+    if not hasattr(state, "db"):
+        state.db = InMemoryDB()
+    return state.db
