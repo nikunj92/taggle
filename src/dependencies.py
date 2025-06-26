@@ -1,5 +1,6 @@
 from litestar.datastructures import State
 
+from src.errors.base import DatabaseNotInitializedError
 from src.services.search_service import SearchService
 from src.services.submission_service import SubmissionService
 from src.storage.in_memory_db import InMemoryDB
@@ -14,5 +15,5 @@ async def get_search_service(state: State) -> SearchService:
 
 async def get_db(state: State) -> InMemoryDB:
     if not hasattr(state, "db"):
-        raise Exception("Database not initialized in state. Ensure to set it before accessing. - name this exception something more descriptive")
+        raise DatabaseNotInitializedError
     return state.db
