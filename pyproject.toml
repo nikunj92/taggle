@@ -18,7 +18,7 @@ pytest = "^8.4.1"
 litestar = "^2.16.0"
 
 [tool.poetry.scripts]
-start = "app.src.main:run"
+start = "src.app:run"
 
 
 

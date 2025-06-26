@@ -1,7 +1,7 @@
 from litestar import Litestar
 
-from app.src.in_memory_db import init_state
-from app.src.routes import submit_item, query_items
+from src.storage.in_memory_db import init_state
+from src.routes import submit_item, query_items
 
 app = Litestar(
     route_handlers=[submit_item, query_items],

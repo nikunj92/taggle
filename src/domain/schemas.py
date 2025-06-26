@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
-from app.src.types import ValueType
+from src.domain.types import ValueType
 
 
 class SubmitRequest(BaseModel):

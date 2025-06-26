@@ -4,10 +4,10 @@ from litestar import get, post
 from litestar.datastructures import State
 from litestar.response import Response
 
-from app.src.errors.ValueTypeError import ValueTypeError
-from app.src.schemas import SubmitRequest, ItemResponse
-from app.src.types import ValueType
-from app.src.utils.helpers import detect_value_type
+from src.errors.base import ValueTypeError
+from src.domain.schemas import SubmitRequest, ItemResponse
+from src.domain.types import ValueType
+from src.utils.helpers import detect_value_type
 
 
 @post("/submit")

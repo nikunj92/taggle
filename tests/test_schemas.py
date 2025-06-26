@@ -1,5 +1,5 @@
-from app.src.schemas import SubmitRequest, ItemResponse
-from app.src.types import ValueType
+from src import SubmitRequest, ItemResponse
+from src import ValueType
 
 
 def test_submit_schema_defaults():

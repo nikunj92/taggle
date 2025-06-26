@@ -1,11 +1,10 @@
 import re
 from ipaddress import ip_address
 
-from app.src.errors.ValueTypeError import ValueTypeError
-from app.src.types import ValueType
+from src.errors.base import ValueTypeError
+from src.domain.types import ValueType
 
 # TODO test regexes are too strict or too loose or if libraries can be used
-# TODO plug in to the app
 
 HASH_REGEX = re.compile(r"^[a-fA-F0-9]{32,64}$")  # MD5/SHA1/SHA256
 DOMAIN_REGEX = re.compile(
