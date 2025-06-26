@@ -1,0 +1,31 @@
+from typing import List, Optional
+
+from src.domain.data_response import DataResponse
+from src.errors.base import NoItemsMatchedError
+from src.storage.in_memory_db import InMemoryDB
+
+
+class SearchService:
+    def __init__(self, db: InMemoryDB):
+        self.db = db
+
+    def search(self, value: str, tags: Optional[List[str]] = None, limit: int = 10) -> List[DataResponse]:
+        value = value.lower()
+        tags = [t.lower() for t in tags] if tags else None
+
+        matches = self.db.get_by_value(value)
+
+        if not matches:
+            raise NoItemsMatchedError(f"No items found for value: {value}")
+
+        filtered = []
+        for item in matches:
+            if tags is None or any(tag in item.tags for tag in tags):
+                filtered.append(item)
+            if len(filtered) >= limit:
+                break
+
+        if not filtered:
+            raise NoItemsMatchedError(f"No items matched tag filter for value: {value}")
+
+        return [DataResponse(value=item.value, type=item.type, tags=item.tags) for item in filtered]

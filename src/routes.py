@@ -1,37 +1,33 @@
-from typing import Optional, List
+from typing import Optional
 
 from litestar import get, post
-from litestar.datastructures import State
 from litestar.response import Response
 
-
-from src.domain import ValueType
-from src.domain.data_response import DataResponse
 from src.domain.submit_request import SubmitRequest
-from src.errors.base import ModelTypeError
-from src.utils.helpers import detect_value_type
+from src.errors.base import ModelTypeError, NoItemsMatchedError
+from src.services.search_service import SearchService
+from src.services.submission_service import SubmissionService
 
 
 @post("/submit")
-async def submit_item(data: SubmitRequest, state: State) -> Response:
+async def submit_item(data: SubmitRequest, submission_service: SubmissionService) -> Response:
     try:
-        value_type = detect_value_type(data.value)
+        id = submission_service.submit(data.value, data.tags)
     except ModelTypeError as e:
         return Response(status_code=400, content={"error": str(e)})
-    return Response(status_code=201, content={"id": "generated-id"})
+    return Response(status_code=201, content={"id": id})
 
 
 @get("/data")
 async def query_items(
-        value: Optional[str] = None,
+        search_service: SearchService,
+        value: str,
         tags: Optional[str] = None,
-        limit: Optional[int] = 10
-) -> List[DataResponse]:
-    # TODO query after storage is implemented
-    return [
-        DataResponse(
-            value=value or "example.org",
-            type=ValueType.HASH,
-            tags=tags.split(",") if tags else [],
-        )
-    ]
+        limit: int = 10,
+) -> Response:
+    try:
+        tag_list = tags.split(",") if tags else None
+        data = search_service.search(value, tag_list, limit)
+        return Response(status_code=200, content={"data": [item.dict() for item in data]})
+    except NoItemsMatchedError as e:
+        return Response(status_code=404, content={"error": str(e)})

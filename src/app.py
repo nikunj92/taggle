@@ -1,11 +1,17 @@
 from litestar import Litestar
+from litestar.di import Provide
 
+from src.dependencies import get_submission_service, get_search_service
 from src.routes import submit_item, query_items
-from src.storage.in_memory_db import init_state
+from src.storage import init_state
 
 app = Litestar(
     route_handlers=[submit_item, query_items],
-    on_startup=[init_state]
+    on_startup=[init_state],
+    dependencies={
+        "submission_service": Provide(get_submission_service),
+        "search_service": Provide(get_search_service),
+    }
 )
 
 

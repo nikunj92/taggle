@@ -67,17 +67,17 @@ As provided in the requirements, we will implement two endpoints:
 
 ### Assumptions
 - We can lower case tags and values - the input case is not significant.
-
-- [TODO] this uncovered a misunderstanding of the requirements
-  - We need to allow multiple entries with the same value but different tags.
-  - Need to reconsider the data structure - a simple idea would be to use additional memory - store value to ids.
     
 ## NOTES 
 - Need to ensure validation of IPs, hashes, and domain names.
-- Need to store items in a manner that they can be efficiently queried.
 - Need to consider time and space as in-memory storage is required.
 
 ### Story so far
 Simple litestar template with endpoints routes and schemas defined.
-added basic tests for the endpoints.
+added a simple in-memory storage for the data.
+added a simple deduplication mechanism.
+added validation for IPs, hashes, and domain names.
+added services to add and query data.
 
+TODO
+review the code and add tests tomorrow before submitting.

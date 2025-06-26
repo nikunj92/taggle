@@ -1,3 +1,4 @@
+import pytest
 from src.domain import ValueType
 from src.utils.helpers import detect_value_type
 
@@ -13,9 +14,5 @@ def test_valid_domain():
     assert detect_value_type("sub.example.com") is ValueType.DOMAIN
 
 def test_invalid_value():
-    try:
+    with pytest.raises(ValueError, match="Unsupported value: invalid_value!"):
         detect_value_type("invalid_value")
-    except ValueError as e:
-        assert str(e) == "Unsupported value: invalid_value! Did not match Domain, IP or Hash type"
-    else:
-        assert False, "Expected ValueError for invalid value"

@@ -5,4 +5,6 @@ from src.app import app
 
 @pytest.fixture(scope="module")
 def client() -> TestClient:
-    return TestClient(app=app)
+    client = TestClient(app=app)
+    client.app.on_startup[0](client.app) # make DI work
+    return client

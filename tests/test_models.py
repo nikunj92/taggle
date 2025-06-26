@@ -1,4 +1,3 @@
-
 from src.domain import ValueType
 from src.domain.data_response import DataResponse
 from src.domain.submit_request import SubmitRequest
