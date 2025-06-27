@@ -23,11 +23,11 @@ async def query_items(
         search_service: SearchService,
         value: str,
         tags: Optional[str] = None,
-        limit: int = 10,
+        limit: Optional[int] = None,
 ) -> Response:
     try:
         tag_list = tags.split(",") if tags else None
         data = search_service.search(value, tag_list, limit)
-        return Response(status_code=200, content={"data": [item.dict() for item in data]})
+        return Response(status_code=200, content={"data": [item for item in data]})
     except NoItemsMatchedError as e:
         return Response(status_code=404, content={"error": str(e)})

@@ -1,5 +1,30 @@
+# Install and Run taggle
+## Prerequisites
+- Python 3.9+
+- poetry
 
-## taggle API Design Document
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone git@github.com:nikunj92/taggle.git
+   cd taggle
+   # Install dependencies using poetry (creates .venv)
+   poetry install
+    ```
+   > Note: This project uses in-project virtualenvs via .venv/ (see poetry.toml) -> Given the small size of the project, this felt a good choice. If you want to use a global virtualenv, you can run `poetry config virtualenvs.in-project false` before running `poetry install`.
+
+2. Run the tests:
+    ```bash
+    poetry run pytest
+    ```
+   
+3. Run the application:
+    ```bash
+    poetry run taggle
+    ```
+   
+
+# taggle API Design Document
 ### Requirements
 - Build a minimal RESTful solution to tag a search with an in-memory storage. 
   - The solution should allow users to submit a value (IP, hash, or domain) with optional tags
@@ -31,9 +56,11 @@ Litestar with Provides is used with the following endpoints:
   - The end point will return 200 with the ID of the submitted value.
   - If the value, tag tuple is a duplicate, it will return the existing ID.
   - If the value is invalid (not an IP, hash, or domain), it will return a 400 Bad Request with an error message.
-- `GET /data` - to query for values based on tags and value.
+- `GET /data` - to query for values
   - The endpoint will return a list of values that match the tags and value limited by the provided limit.
     - See the problem document for the expected query parameters and response structure.
+  - If no values match the query, it will return a 404 Not Found with an error message.
+  - If the query parameters are invalid, it will return a 400 Bad Request with an error message.
 - Validation is basic, checking if the value is a valid IP, hash, or domain.
   - IP validation uses regex to check for valid IPv4 and IPv6 formats.
   - Hash validation checks for a valid hex string of length 32 (MD5) or 64 (SHA-256).
@@ -74,6 +101,7 @@ The app was structured to:
 
 ## Testing Plan
 
+### Automated Tests
 | Layer          | What is tested                    | Method                                                     |
 | -------------- | --------------------------------- | ---------------------------------------------------------- |
 | **Routes**     | HTTP response structure & status  | `TestClient` with realistic request payloads               |
@@ -82,6 +110,42 @@ The app was structured to:
 | **Models**     | Schema and behavior               | Implicitly tested via service and route validation         |
 
 > This has been implemented for the most part but I missed out on the error handling tests for the routes. I tested the happy path and some edge cases, but not all error cases. I would have liked to test the error responses more thoroughly if this was a real project.
+
+### Manual Tests
+1. Bad requests to `/submit` with invalid values
+```bash
+curl -X POST http://localhost:8000/submit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "value": "!!!not-a-valid-value###",
+    "tags": ["test", "fail"]
+  }'
+  
+2. Valid request to `/submit` with a value and tags
+```bash
+curl -X POST http://localhost:8000/submit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "value": "127.0.0.1",
+    "tags": ["local", "loopback"]
+    }'
+```
+
+3. Valid request to `/submit` without a tag
+```bash
+curl -X POST http://localhost:8000/submit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "value": "127.0.0.1",
+    "tags": ["local", "loopback"]
+    }'
+```
+
+4. Valid request to `/data` with a tag
+```bash
+curl -X GET "http://localhost:8000/data?value=127.0.0.1&tags=local&limit=1"
+```
+
 ---
 
 ## Discussion Points and Some Assumptions

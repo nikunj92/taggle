@@ -9,7 +9,7 @@ class SearchService:
     def __init__(self, db: InMemoryDB):
         self.db = db
 
-    def search(self, value: str, tags: Optional[List[str]] = None, limit: int = 10) -> List[DataResponse]:
+    def search(self, value: str, tags: Optional[List[str]] = None, limit: Optional[int] = None) -> List[DataResponse]:
         value = value.lower()
         tags = [t.lower() for t in tags] if tags else None
 
@@ -20,9 +20,9 @@ class SearchService:
 
         filtered = []
         for item in matches:
-            if tags is None or any(tag in item.tags for tag in tags):
+            if not tags or any(tag in item.tags for tag in tags):
                 filtered.append(item)
-            if len(filtered) >= limit:
+            if limit and len(filtered) >= limit:
                 break
 
         if not filtered:

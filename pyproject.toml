@@ -19,7 +19,7 @@ pytest = "^8.4.1"
 litestar = "^2.16.0"
 
 [tool.poetry.scripts]
-start = "src.app:main"
+taggle = "src.app:main"
 
 [build-system]
 requires = ["poetry-core"]
