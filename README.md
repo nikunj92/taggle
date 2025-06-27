@@ -186,6 +186,6 @@ I have left my commit history intact. In a real world project, I would branch of
 * Once the model solidified, I backtracked into *refactor hell* — wiring DI correctly, restructuring to reduce coupling, and getting tests to work consistently. And naming, the engineers' bane!
 * DI proved especially subtle with storage state, caught that issue early this morning. I tested the code via tests, but direct testing uncovered some issues. Learnt more about Litestars' db.state.
 
-> !! A glance at the commit history will likely show a very non-linear approach and a lot of jumping around - a reflection of my neurodivergence. I considered squashing it, but then we are who we are, no more no less!
+> !! While I wrote this architecture like it was a linear process, a quick look at my commit log may reveal a bit about the nature of my neurodivergence - and really - when has dev ever been linear !!
 
 ---
