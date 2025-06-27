@@ -31,3 +31,5 @@ async def query_items(
         return Response(status_code=200, content={"data": [item for item in data]})
     except NoItemsMatchedError as e:
         return Response(status_code=404, content={"error": str(e)})
+    except ModelTypeError as e:
+        return Response(status_code=400, content={"error": str(e)})

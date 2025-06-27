@@ -146,6 +146,10 @@ curl -X POST http://localhost:8000/submit \
 curl -X GET "http://localhost:8000/data?value=127.0.0.1&tags=local&limit=1"
 ```
 
+5. Invalid request to `/data` with an invalid value
+```bash
+curl -X GET "http://localhost:8000/data?value=not-a-valid-value###&tags=local&limit=1"
+```
 ---
 
 ## Discussion Points and Some Assumptions
