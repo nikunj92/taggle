@@ -20,4 +20,6 @@ def client() -> TestClient:
         search_service_provider=lambda: test_search_service,
     )
 
+    app.state["db"] = test_db
+
     return TestClient(app=app)
