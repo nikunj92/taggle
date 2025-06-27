@@ -86,8 +86,10 @@ Litestar with Provides is used with the following endpoints:
 ### Code Structure & Responsibilities
 
 * `src/routes.py`: Route definitions, minimal logic, DI endpoints
+* `src/app.py`: The factory to create the lightstar app and a main block to run it
 * `src/services/`: Encapsulates business logic, testable in isolation
 * `src/domain/`: Request/response models
+* `src/utils` : Contains helpers, currently only value to value type and validation.
 * `src/storage/in_memory_db.py`: Naive in-memory DB with value → item list mapping
 * `src/dependencies.py`: Declarative DI setup, used in `app.py`
 
@@ -155,7 +157,7 @@ curl -X GET "http://localhost:8000/data?value=not-a-valid-value###&tags=local&li
 ## Discussion Points and Some Assumptions
 
 1. **Optimization Discussion**
-   In my implementation tag searches and inserts is squared - the search for the index list by value is constant, then we iterate tag lists for the items at those indexes.
+   In my implementation tag searches and inserts is O(mxn) in time complexity - the search for the index list by value is constant, then we iterate tag lists for the items at those indexes which is mxn.
    We could make the search and insert constant with a reverse index of tags to values, and value to set of tag sets. There are a couple of ways to do this (some better than others for memory), but the general idea would be we can intersect the value and tag to have a constant search time. Similarly, we can search the tag set to see if the new tag set exists for the given value in constant time.
    However, memory is costly for an in memory db. The reverse index for value to ids takes some memory, but we get a square-ish complexity instead of a cubic-ish one. Happy middle!
 
